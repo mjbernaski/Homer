@@ -296,6 +296,49 @@ def create_odyssey_html(input_file, output_file):
             opacity: 0.9;
         }
 
+        .selection-counter {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: var(--gold);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-size: 0.9em;
+            font-weight: bold;
+            display: none;
+            z-index: 1001;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .selection-counter.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        ::selection {
+            background: rgba(52, 152, 219, 0.3);
+            color: inherit;
+        }
+
+        ::-moz-selection {
+            background: rgba(52, 152, 219, 0.3);
+            color: inherit;
+        }
+
         footer {
             background: var(--primary);
             color: white;
@@ -544,7 +587,8 @@ def create_odyssey_html(input_file, output_file):
         </footer>
     </div>
 
-    <div class="back-to-top" onclick="scrollToTop()" id="backToTop">↑</div>"""
+    <div class="back-to-top" onclick="scrollToTop()" id="backToTop">↑</div>
+    <div class="selection-counter" id="selectionCounter"></div>"""
     else:
         html_content += """
         </div>
@@ -555,7 +599,8 @@ def create_odyssey_html(input_file, output_file):
         </footer>
     </div>
 
-    <div class="back-to-top" onclick="scrollToTop()" id="backToTop">↑</div>"""
+    <div class="back-to-top" onclick="scrollToTop()" id="backToTop">↑</div>
+    <div class="selection-counter" id="selectionCounter"></div>"""
 
     html_content += """
 
@@ -600,6 +645,55 @@ def create_odyssey_html(input_file, output_file):
             const scrolled = window.scrollY;
             const scrollPercent = (scrolled / (docHeight - winHeight)) * 100;
             scrollProgress.style.width = scrollPercent + '%';
+        });
+
+        // Selection word counter functionality
+        let selectionTimeout;
+
+        function countWordsInSelection() {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+            const counter = document.getElementById('selectionCounter');
+
+            if (selectedText.length > 0) {
+                // Count words by splitting on whitespace and filtering empty strings
+                const words = selectedText.split(/\\s+/).filter(word => word.length > 0);
+                const wordCount = words.length;
+                const charCount = selectedText.length;
+
+                // Update counter display
+                if (wordCount === 1) {
+                    counter.textContent = `1 word (${charCount} chars)`;
+                } else {
+                    counter.textContent = `${wordCount} words (${charCount} chars)`;
+                }
+
+                counter.classList.add('show');
+
+                // Auto-hide after 3 seconds if no new selection
+                clearTimeout(selectionTimeout);
+                selectionTimeout = setTimeout(() => {
+                    counter.classList.remove('show');
+                }, 3000);
+            } else {
+                counter.classList.remove('show');
+                clearTimeout(selectionTimeout);
+            }
+        }
+
+        // Listen for text selection events
+        document.addEventListener('selectionchange', countWordsInSelection);
+
+        // Also listen for mouseup to catch selection completion
+        document.addEventListener('mouseup', () => {
+            setTimeout(countWordsInSelection, 10);
+        });
+
+        // Hide counter when clicking outside selection
+        document.addEventListener('click', (e) => {
+            if (window.getSelection().toString().trim() === '') {
+                document.getElementById('selectionCounter').classList.remove('show');
+            }
         });
 
         // Initialize
