@@ -79,6 +79,22 @@ def analyze_odyssey_text(input_file):
     stop_word_freq = {word: count for word, count in word_freq.items() if word in stop_words}
     stats['most_common_stop_words'] = sorted(stop_word_freq.items(), key=lambda x: x[1], reverse=True)[:20]
 
+    # Place names analysis (geographical locations in the Odyssey)
+    place_names = {
+        'ithaca', 'troy', 'sparta', 'pylos', 'scheria', 'phaeacia', 'crete',
+        'egypt', 'cyprus', 'athens', 'argos', 'mycenae', 'tiryns', 'corinth',
+        'sicily', 'italy', 'phoenicia', 'libya', 'ethiopia', 'thrace',
+        'lemnos', 'lesbos', 'tenedos', 'scyros', 'euboea', 'aegina',
+        'salamis', 'megara', 'thebes', 'delphi', 'olympus', 'parnassus',
+        'helicon', 'cithaeron', 'pentelicus', 'hymettus', 'laurium',
+        'sunium', 'marathon', 'rhamnus', 'decelea', 'aphidna', 'acharnae',
+        'colonus', 'aegaleus', 'piraeus', 'phaleron', 'eleusis',
+        'dulichium', 'same', 'zacynthus', 'cephalonia', 'leucas',
+        'ogygian', 'aeaea', 'laestrygonian', 'cicones', 'lotus',
+        'cyclopes', 'hades', 'elysium', 'tartarus', 'styx', 'lethe',
+        'acheron', 'cocytus', 'phlegethon', 'oceanus', 'temesa', 'ephyra'
+    }
+
     # Character names analysis (common Greek/epic names)
     character_names = {
         'ulysses', 'odysseus', 'penelope', 'telemachus', 'minerva', 'athena',
@@ -90,6 +106,16 @@ def analyze_odyssey_text(input_file):
         'circe', 'calypso', 'nausicaa', 'alcinous', 'arete', 'demodocus'
     }
 
+    # Count place mentions
+    place_freq = {}
+    for place in place_names:
+        count = sum(1 for word in words if word == place)
+        if count > 0:
+            place_freq[place] = count
+
+    stats['place_mentions'] = sorted(place_freq.items(), key=lambda x: x[1], reverse=True)[:25]
+
+    # Count character mentions
     character_freq = {}
     for name in character_names:
         count = sum(1 for word in words if word == name)
@@ -127,9 +153,9 @@ if __name__ == "__main__":
     print(f"Total books: {stats['total_books']}")
     print(f"Average word length: {stats['avg_word_length']:.2f}")
     print(f"Average words per sentence: {stats['avg_words_per_sentence']:.2f}")
-    print("\nTop 10 non-stop words:")
-    for word, count in stats['most_common_words'][:10]:
-        print(f"  {word}: {count}")
+    print("\nTop 10 place mentions:")
+    for place, count in stats['place_mentions'][:10]:
+        print(f"  {place}: {count}")
     print("\nTop 10 character mentions:")
     for name, count in stats['character_mentions'][:10]:
         print(f"  {name}: {count}")

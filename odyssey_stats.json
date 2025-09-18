@@ -292,6 +292,108 @@
       915
     ]
   ],
+  "place_mentions": [
+    [
+      "ithaca",
+      107
+    ],
+    [
+      "troy",
+      70
+    ],
+    [
+      "same",
+      61
+    ],
+    [
+      "pylos",
+      44
+    ],
+    [
+      "hades",
+      30
+    ],
+    [
+      "argos",
+      19
+    ],
+    [
+      "cyclopes",
+      18
+    ],
+    [
+      "oceanus",
+      16
+    ],
+    [
+      "crete",
+      12
+    ],
+    [
+      "dulichium",
+      12
+    ],
+    [
+      "olympus",
+      12
+    ],
+    [
+      "egypt",
+      11
+    ],
+    [
+      "sicily",
+      11
+    ],
+    [
+      "sparta",
+      9
+    ],
+    [
+      "scheria",
+      9
+    ],
+    [
+      "lotus",
+      8
+    ],
+    [
+      "piraeus",
+      8
+    ],
+    [
+      "ogygian",
+      7
+    ],
+    [
+      "parnassus",
+      7
+    ],
+    [
+      "cyprus",
+      5
+    ],
+    [
+      "libya",
+      5
+    ],
+    [
+      "thebes",
+      5
+    ],
+    [
+      "athens",
+      5
+    ],
+    [
+      "zacynthus",
+      5
+    ],
+    [
+      "italy",
+      4
+    ]
+  ],
   "character_mentions": [
     [
       "ulysses",
@@ -354,11 +456,11 @@
       35
     ],
     [
-      "mercury",
+      "apollo",
       30
     ],
     [
-      "apollo",
+      "mercury",
       30
     ],
     [
@@ -378,22 +480,22 @@
     "straightforwardly",
     "circumnavigation",
     "inextinguishable",
-    "impossibilities",
-    "disrespectfully",
     "notwithstanding",
+    "disrespectfully",
     "accomplishments",
+    "impossibilities",
     "extraordinarily",
-    "interpretation",
-    "contemptuously",
-    "discouragement",
-    "laestrygonians",
     "pyriphlegethon",
     "accomplishment",
+    "discouragement",
+    "interpretation",
+    "contemptuously",
+    "laestrygonians",
     "embellishments",
-    "laestrygonian",
-    "mediterranean",
-    "magnificently",
-    "companionship",
-    "disgracefully"
+    "illustrations",
+    "encouragingly",
+    "subscriptions",
+    "cephallenians",
+    "appropriation"
   ]
 }

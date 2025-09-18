@@ -493,12 +493,12 @@ def create_odyssey_html(input_file, output_file):
 
             <div class="stats-grid">
                 <div class="stat-section">
-                    <h4>Most Common Words (Non-Stop Words)</h4>
+                    <h4>Place Mentions</h4>
                     <ul class="stat-list">"""
 
-        # Add top 25 most common words
-        for word, count in stats.get('most_common_words', [])[:25]:
-            html_content += f'                        <li><span>{word.title()}</span> <span class="stat-number">{count}</span></li>\n'
+        # Add top 25 place mentions
+        for place, count in stats.get('place_mentions', [])[:25]:
+            html_content += f'                        <li><span>{place.title()}</span> <span class="stat-number">{count}</span></li>\n'
 
         html_content += """                    </ul>
                 </div>
