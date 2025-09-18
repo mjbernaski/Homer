@@ -340,8 +340,11 @@ def create_odyssey_html(input_file, output_file):
             html_content += f'<div class="footnote">{line}</div>\n'
             continue
 
-        # Regular paragraph
-        html_content += f'<p>{line}</p>\n'
+        # Regular paragraph - add superscript formatting for footnote numbers
+        # Convert standalone numbers to superscript (e.g., "text.14 more text" -> "text.<sup>14</sup> more text")
+        formatted_line = re.sub(r'\.(\d+)\s', r'.<sup>\1</sup> ', line)
+
+        html_content += f'<p>{formatted_line}</p>\n'
 
     if current_book:
         html_content += '</div>\n'
