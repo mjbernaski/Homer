@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
 import html
 import re
+import json
+import os
 
 def create_odyssey_html(input_file, output_file):
     with open(input_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()
+
+    # Load statistics if available
+    stats = {}
+    if os.path.exists('odyssey_stats.json'):
+        with open('odyssey_stats.json', 'r', encoding='utf-8') as f:
+            stats = json.load(f)
 
     html_content = """<!DOCTYPE html>
 <html lang="en">
@@ -129,6 +137,23 @@ def create_odyssey_html(input_file, output_file):
             color: var(--primary);
             cursor: pointer;
             font-family: inherit;
+            margin-right: 20px;
+        }
+
+        nav button {
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            background: var(--gold);
+            color: white;
+            cursor: pointer;
+            font-family: inherit;
+            margin-left: 10px;
+        }
+
+        nav button:hover {
+            background: #e67e22;
         }
 
         .content {
@@ -188,6 +213,87 @@ def create_odyssey_html(input_file, output_file):
             background: var(--bg-light);
             border-left: 4px solid var(--accent);
             font-style: italic;
+        }
+
+        .statistics {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #d5dbdb 100%);
+            padding: 40px;
+            margin: 40px 0;
+            border-radius: 15px;
+            border: 1px solid #bdc3c7;
+            display: none;
+        }
+
+        .statistics.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .stat-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-section h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 5px;
+        }
+
+        .stat-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .stat-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .stat-list li:last-child {
+            border-bottom: none;
+        }
+
+        .stat-number {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .basic-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .basic-stat {
+            text-align: center;
+            padding: 15px;
+            background: var(--accent);
+            color: white;
+            border-radius: 8px;
+        }
+
+        .basic-stat .number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .basic-stat .label {
+            font-size: 0.9em;
+            opacity: 0.9;
         }
 
         footer {
@@ -299,6 +405,7 @@ def create_odyssey_html(input_file, output_file):
             html_content += f'                <option value="book-{book_num}">{book_num}</option>\n'
 
     html_content += """            </select>
+            <button onclick="toggleStats()">📊 View Statistics</button>
         </nav>
 
         <div class="content">
@@ -349,7 +456,86 @@ def create_odyssey_html(input_file, output_file):
     if current_book:
         html_content += '</div>\n'
 
-    html_content += """
+    # Add statistics section if stats are available
+    if stats:
+        html_content += f"""
+        </div>
+
+        <div class="statistics" id="statisticsSection">
+            <h3 style="color: var(--primary); margin-bottom: 30px; text-align: center; font-size: 2em;">📊 Text Analysis & Statistics</h3>
+
+            <div class="basic-stats">
+                <div class="basic-stat">
+                    <span class="number">{stats.get('total_words', 0):,}</span>
+                    <span class="label">Total Words</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">{stats.get('unique_words', 0):,}</span>
+                    <span class="label">Unique Words</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">{stats.get('total_sentences', 0):,}</span>
+                    <span class="label">Sentences</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">{stats.get('total_books', 0)}</span>
+                    <span class="label">Books</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">{stats.get('avg_word_length', 0):.1f}</span>
+                    <span class="label">Avg Word Length</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">{stats.get('avg_words_per_sentence', 0):.1f}</span>
+                    <span class="label">Words/Sentence</span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-section">
+                    <h4>Most Common Words (Non-Stop Words)</h4>
+                    <ul class="stat-list">"""
+
+        # Add top 25 most common words
+        for word, count in stats.get('most_common_words', [])[:25]:
+            html_content += f'                        <li><span>{word.title()}</span> <span class="stat-number">{count}</span></li>\n'
+
+        html_content += """                    </ul>
+                </div>
+
+                <div class="stat-section">
+                    <h4>Character Mentions</h4>
+                    <ul class="stat-list">"""
+
+        # Add character mentions
+        for name, count in stats.get('character_mentions', [])[:15]:
+            html_content += f'                        <li><span>{name.title()}</span> <span class="stat-number">{count}</span></li>\n'
+
+        html_content += """                    </ul>
+                </div>
+
+                <div class="stat-section">
+                    <h4>Longest Words</h4>
+                    <ul class="stat-list">"""
+
+        # Add longest words
+        for word in stats.get('longest_words', [])[:15]:
+            html_content += f'                        <li><span>{word.title()}</span> <span class="stat-number">{len(word)} letters</span></li>\n'
+
+        html_content += """                    </ul>
+                </div>
+
+                <div class="stat-section">
+                    <h4>Most Common Stop Words</h4>
+                    <ul class="stat-list">"""
+
+        # Add stop words
+        for word, count in stats.get('most_common_stop_words', [])[:15]:
+            html_content += f'                        <li><span>{word.title()}</span> <span class="stat-number">{count}</span></li>\n'
+
+        html_content += """                    </ul>
+                </div>
+            </div>
         </div>
 
         <footer>
@@ -358,7 +544,20 @@ def create_odyssey_html(input_file, output_file):
         </footer>
     </div>
 
-    <div class="back-to-top" onclick="scrollToTop()" id="backToTop">↑</div>
+    <div class="back-to-top" onclick="scrollToTop()" id="backToTop">↑</div>"""
+    else:
+        html_content += """
+        </div>
+
+        <footer>
+            <p>Homer's Odyssey • Translated by Samuel Butler</p>
+            <p>This edition from <a href="https://www.gutenberg.org">Project Gutenberg</a></p>
+        </footer>
+    </div>
+
+    <div class="back-to-top" onclick="scrollToTop()" id="backToTop">↑</div>"""
+
+    html_content += """
 
     <script>
         function jumpToBook() {
@@ -372,6 +571,16 @@ def create_odyssey_html(input_file, output_file):
 
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleStats() {
+            const statsSection = document.getElementById('statisticsSection');
+            if (statsSection) {
+                statsSection.classList.toggle('active');
+                if (statsSection.classList.contains('active')) {
+                    statsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
         }
 
         // Show/hide back to top button

@@ -121,6 +121,23 @@
             color: var(--primary);
             cursor: pointer;
             font-family: inherit;
+            margin-right: 20px;
+        }
+
+        nav button {
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            background: var(--gold);
+            color: white;
+            cursor: pointer;
+            font-family: inherit;
+            margin-left: 10px;
+        }
+
+        nav button:hover {
+            background: #e67e22;
         }
 
         .content {
@@ -180,6 +197,87 @@
             background: var(--bg-light);
             border-left: 4px solid var(--accent);
             font-style: italic;
+        }
+
+        .statistics {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #d5dbdb 100%);
+            padding: 40px;
+            margin: 40px 0;
+            border-radius: 15px;
+            border: 1px solid #bdc3c7;
+            display: none;
+        }
+
+        .statistics.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .stat-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-section h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 5px;
+        }
+
+        .stat-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .stat-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .stat-list li:last-child {
+            border-bottom: none;
+        }
+
+        .stat-number {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .basic-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .basic-stat {
+            text-align: center;
+            padding: 15px;
+            background: var(--accent);
+            color: white;
+            border-radius: 8px;
+        }
+
+        .basic-stat .number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .basic-stat .label {
+            font-size: 0.9em;
+            opacity: 0.9;
         }
 
         footer {
@@ -302,6 +400,7 @@
                 <option value="book-XXIII">XXIII</option>
                 <option value="book-XXIV">XXIV</option>
             </select>
+            <button onclick="toggleStats()">📊 View Statistics</button>
         </nav>
 
         <div class="content">
@@ -2288,6 +2387,129 @@
 
         </div>
 
+        <div class="statistics" id="statisticsSection">
+            <h3 style="color: var(--primary); margin-bottom: 30px; text-align: center; font-size: 2em;">📊 Text Analysis & Statistics</h3>
+
+            <div class="basic-stats">
+                <div class="basic-stat">
+                    <span class="number">126,905</span>
+                    <span class="label">Total Words</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">7,001</span>
+                    <span class="label">Unique Words</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">4,474</span>
+                    <span class="label">Sentences</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">24</span>
+                    <span class="label">Books</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">4.0</span>
+                    <span class="label">Avg Word Length</span>
+                </div>
+                <div class="basic-stat">
+                    <span class="number">28.4</span>
+                    <span class="label">Words/Sentence</span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-section">
+                    <h4>Most Common Words (Non-Stop Words)</h4>
+                    <ul class="stat-list">                        <li><span>Ulysses</span> <span class="stat-number">641</span></li>
+                        <li><span>Be</span> <span class="stat-number">552</span></li>
+                        <li><span>We</span> <span class="stat-number">547</span></li>
+                        <li><span>House</span> <span class="stat-number">409</span></li>
+                        <li><span>Man</span> <span class="stat-number">340</span></li>
+                        <li><span>Men</span> <span class="stat-number">329</span></li>
+                        <li><span>S</span> <span class="stat-number">321</span></li>
+                        <li><span>Went</span> <span class="stat-number">301</span></li>
+                        <li><span>Own</span> <span class="stat-number">277</span></li>
+                        <li><span>Telemachus</span> <span class="stat-number">276</span></li>
+                        <li><span>Son</span> <span class="stat-number">276</span></li>
+                        <li><span>Upon</span> <span class="stat-number">267</span></li>
+                        <li><span>Tell</span> <span class="stat-number">262</span></li>
+                        <li><span>Here</span> <span class="stat-number">249</span></li>
+                        <li><span>Father</span> <span class="stat-number">246</span></li>
+                        <li><span>Suitors</span> <span class="stat-number">245</span></li>
+                        <li><span>Ship</span> <span class="stat-number">239</span></li>
+                        <li><span>Home</span> <span class="stat-number">237</span></li>
+                        <li><span>Should</span> <span class="stat-number">229</span></li>
+                        <li><span>Came</span> <span class="stat-number">210</span></li>
+                        <li><span>Shall</span> <span class="stat-number">210</span></li>
+                        <li><span>Let</span> <span class="stat-number">209</span></li>
+                        <li><span>Sea</span> <span class="stat-number">208</span></li>
+                        <li><span>Much</span> <span class="stat-number">203</span></li>
+                        <li><span>Am</span> <span class="stat-number">201</span></li>
+                    </ul>
+                </div>
+
+                <div class="stat-section">
+                    <h4>Character Mentions</h4>
+                    <ul class="stat-list">                        <li><span>Ulysses</span> <span class="stat-number">641</span></li>
+                        <li><span>Telemachus</span> <span class="stat-number">276</span></li>
+                        <li><span>Jove</span> <span class="stat-number">188</span></li>
+                        <li><span>Minerva</span> <span class="stat-number">155</span></li>
+                        <li><span>Penelope</span> <span class="stat-number">112</span></li>
+                        <li><span>Eumaeus</span> <span class="stat-number">81</span></li>
+                        <li><span>Alcinous</span> <span class="stat-number">68</span></li>
+                        <li><span>Menelaus</span> <span class="stat-number">67</span></li>
+                        <li><span>Neptune</span> <span class="stat-number">61</span></li>
+                        <li><span>Antinous</span> <span class="stat-number">58</span></li>
+                        <li><span>Laertes</span> <span class="stat-number">47</span></li>
+                        <li><span>Circe</span> <span class="stat-number">46</span></li>
+                        <li><span>Nestor</span> <span class="stat-number">41</span></li>
+                        <li><span>Agamemnon</span> <span class="stat-number">37</span></li>
+                        <li><span>Calypso</span> <span class="stat-number">35</span></li>
+                    </ul>
+                </div>
+
+                <div class="stat-section">
+                    <h4>Longest Words</h4>
+                    <ul class="stat-list">                        <li><span>Straightforwardly</span> <span class="stat-number">17 letters</span></li>
+                        <li><span>Circumnavigation</span> <span class="stat-number">16 letters</span></li>
+                        <li><span>Inextinguishable</span> <span class="stat-number">16 letters</span></li>
+                        <li><span>Impossibilities</span> <span class="stat-number">15 letters</span></li>
+                        <li><span>Disrespectfully</span> <span class="stat-number">15 letters</span></li>
+                        <li><span>Notwithstanding</span> <span class="stat-number">15 letters</span></li>
+                        <li><span>Accomplishments</span> <span class="stat-number">15 letters</span></li>
+                        <li><span>Extraordinarily</span> <span class="stat-number">15 letters</span></li>
+                        <li><span>Interpretation</span> <span class="stat-number">14 letters</span></li>
+                        <li><span>Contemptuously</span> <span class="stat-number">14 letters</span></li>
+                        <li><span>Discouragement</span> <span class="stat-number">14 letters</span></li>
+                        <li><span>Laestrygonians</span> <span class="stat-number">14 letters</span></li>
+                        <li><span>Pyriphlegethon</span> <span class="stat-number">14 letters</span></li>
+                        <li><span>Accomplishment</span> <span class="stat-number">14 letters</span></li>
+                        <li><span>Embellishments</span> <span class="stat-number">14 letters</span></li>
+                    </ul>
+                </div>
+
+                <div class="stat-section">
+                    <h4>Most Common Stop Words</h4>
+                    <ul class="stat-list">                        <li><span>The</span> <span class="stat-number">6647</span></li>
+                        <li><span>And</span> <span class="stat-number">5241</span></li>
+                        <li><span>To</span> <span class="stat-number">3445</span></li>
+                        <li><span>Of</span> <span class="stat-number">3374</span></li>
+                        <li><span>I</span> <span class="stat-number">1979</span></li>
+                        <li><span>A</span> <span class="stat-number">1947</span></li>
+                        <li><span>You</span> <span class="stat-number">1914</span></li>
+                        <li><span>He</span> <span class="stat-number">1860</span></li>
+                        <li><span>In</span> <span class="stat-number">1808</span></li>
+                        <li><span>For</span> <span class="stat-number">1379</span></li>
+                        <li><span>His</span> <span class="stat-number">1309</span></li>
+                        <li><span>As</span> <span class="stat-number">1280</span></li>
+                        <li><span>That</span> <span class="stat-number">1261</span></li>
+                        <li><span>It</span> <span class="stat-number">1246</span></li>
+                        <li><span>With</span> <span class="stat-number">1171</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <footer>
             <p>Homer's Odyssey • Translated by Samuel Butler</p>
             <p>This edition from <a href="https://www.gutenberg.org">Project Gutenberg</a></p>
@@ -2308,6 +2530,16 @@
 
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleStats() {
+            const statsSection = document.getElementById('statisticsSection');
+            if (statsSection) {
+                statsSection.classList.toggle('active');
+                if (statsSection.classList.contains('active')) {
+                    statsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
         }
 
         // Show/hide back to top button
