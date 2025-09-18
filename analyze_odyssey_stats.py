@@ -11,8 +11,35 @@ def analyze_odyssey_text(input_file):
     text_for_analysis = re.sub(r'^BOOK [IVXLCDM]+$', '', text, flags=re.MULTILINE)
     text_for_analysis = re.sub(r'^[A-Z\s—]+$', '', text_for_analysis, flags=re.MULTILINE)
 
-    # Remove footnote markers
-    text_for_analysis = re.sub(r'\[\d+[^\]]*\]', '', text_for_analysis)
+    # Remove footnote paragraphs (lines starting with [number])
+    # This removes entire footnote content, not just reference markers
+    lines = text_for_analysis.split('\n')
+    filtered_lines = []
+    in_footnote = False
+
+    for line in lines:
+        line_stripped = line.strip()
+
+        # Check if this line starts a footnote
+        if re.match(r'^\[\d+\]', line_stripped):
+            in_footnote = True
+            continue
+
+        # Check if we're in a footnote and this line ends it
+        if in_footnote:
+            # If line ends with ']' and doesn't start a new footnote, end the footnote
+            if line_stripped.endswith(']') and not re.match(r'^\[\d+\]', line_stripped):
+                in_footnote = False
+            continue
+
+        # If we're not in a footnote, keep the line
+        if not in_footnote:
+            filtered_lines.append(line)
+
+    text_for_analysis = '\n'.join(filtered_lines)
+
+    # Also remove any remaining inline footnote reference numbers (like "text.14 more")
+    text_for_analysis = re.sub(r'\.(\d+)\s', '. ', text_for_analysis)
 
     # Basic statistics
     stats = {}
